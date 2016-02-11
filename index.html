@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Fortune</title>
+		<script type='text/javascript' src='database.js'></script>
+    <!-- dashcode files -->
+		<script type="text/javascript" src="main.js" charset="utf-8"></script>
+        <style type="text/css" media="screen">@import "./jqtouch/jqtouch.min.css";</style>
+        <style type="text/css" media="screen">@import "./themes/jqt/theme.min.css";</style>
+		<style type='text/css' media='screen'>@import "./css/style.css";</style>
+		<script src='./js/jquery.js' type='text/javascript'></script>
+		<script src='./phonegap.js' type='text/javascript'></script>
+		<script src='./js/parser.js' type='text/javascript'></script>
+        <script src="./jqtouch/jquery.1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./jqtouch/jqtouch.min.js" type="application/x-javascript" charset="utf-8"></script>
+        <script src="./extensions/jqt.floaty.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src='./js/function.js' type='text/javascript'></script>
+		
+		
+        
+		<script type="text/javascript" charset="utf-8">
+            var jQT = new $.jQTouch({
+                icon: 'jqtouch.png',
+                addGlossToIcon: false,
+                startupScreen: 'jqt_startup.png',
+                statusBar: 'black',
+                preloadImages: [
+                    './themes/jqt/img/back_button.png',
+                    './themes/jqt/img/back_button_clicked.png',
+                    './themes/jqt/img/button_clicked.png',
+                    './themes/jqt/img/grayButton.png',
+                    './themes/jqt/img/whiteButton.png',
+                    './themes/jqt/img/loading.gif'
+                    ]
+            });
+            // Some sample Javascript functions:
+            $(document).bind("deviceready", function() { 
+
+          setupToolbars();
+
+     });
+ 
+
+
+function setupToolbars() {
+
+     window.uicontrols.createToolBar();
+
+     window.uicontrols.setToolBarTitle("오늘의 빵상");
+	 
+
+     window.uicontrols.createTabBar();
+
+ 
+
+     var toprated = 0;
+
+     window.uicontrols.createTabBarItem("Home", "Home", "1.png", {
+
+       onSelect: function() {
+	   index_Cheack();
+       }
+
+     });
+
+ 
+
+     var recents = 0;
+
+     window.uicontrols.createTabBarItem("Setting", "Setting",  "2.png", {
+
+       onSelect: function() {
+	   
+	   change_info();
+
+       /*navigator.notification.alert("Recents selected");
+
+       window.uicontrols.updateTabBarItem("recents", { badge: ++recents });*/
+
+       }
+
+     });
+
+ 
+
+     var history = 0;
+
+     window.uicontrols.createTabBarItem("About", "About",  "3.png", {
+
+       onSelect: function() {
+	   
+	   show_company();
+
+       /*navigator.notification.alert("History selected");
+
+       window.uicontrols.updateTabBarItem("history", { badge: ++history });*/
+
+       }
+
+     });
+
+ 
+
+     //window.uicontrols.createTabBarItem("search", "Search", "tabButton:Search");
+
+     //window.uicontrols.createTabBarItem("downloads", "Downloads", "tabButton:Downloads");
+
+ 
+
+     window.uicontrols.showTabBar();
+
+     window.uicontrols.showTabBarItems("Home", "Setting", "About");
+
+}
+
+        
+        </script>        
+    </head>
+
+<body>
+<div>
+<!--<input type='button' value='test1' onclick='test_woo();'
+<input type='button' value='test2' onclick='change_info();'>
+<input type='button' value='test3' onclick='show_company();'>
+<input type='button' value='test4' onclick='out_message();'>-->
+
+
+<div class="floaty" style='display:none'>
+</div>
+
+
+
+<div id="have_user">
+<br><br>
+	<div class="toolbar">
+	<h1>환영한다 인간들아</h1>               
+	</div>
+	<ul class="rounded">
+	<li><img src='./image/48832_500x.jpg'></li>	
+	</ul>
+	<a style="margin:0 80px;color:rgba(0,0,0,.9)" id='start' href="#" class="whiteButton goback">Start</a>
+</div>
+
+<div id="not_user">
+<br><br>	
+	<ul class="edit rounded">
+	<li><center><img src='./image/48832_500x.jpg'></center></li>
+	</ul>
+	<ul class="edit rounded">
+	<li>입력해라 인간들아</li>
+	<form>
+	<li><input type="text" id="name_in" placeholder="이름"/></li>
+	<li><input type="text" id="year_in" placeholder="태어난년도"/></li>
+	<a style="margin:0 80px;color:rgba(0,0,0,.9)" id='user_input' href="#" class="whiteButton goback">Go</a>
+	</form>
+</div>
+
+<div id="change_user">
+<br><br>
+	<div class="toolbar">
+	<h1>수정</h1>
+	</div>
+	<ul class="edit rounded">
+		<li>수정해라 인간들아</li>
+		<li><input type="text" placeholder="" id="name_in2" /></li>
+		<li><input type="text" placeholder="" id="year_in2" /></li>
+	</ul>
+	<ul class="individual">
+		<li><a id='modify_now' href="#">저장</a></li>
+		<li><a class='comebackhome'href="#">홈</a></li>
+	</ul>	
+</div>
+
+<div id="choice_user">
+<br><br>
+<div id='load'><img width="100%" height='100%'id="loading" alt="loading" src="ajax-loader.gif"/></div>
+	<div class="toolbar">
+	<h1 id='show_today'></h1>
+	</div>
+	<ul class="edit rounded">
+	<li id='rcvData'></li>
+	</ul>
+	
+	<ul class="edgetoedge" id='sdf'>
+	<li>골라라 인간들아</li>
+	</ul>
+	<ul id='detail' class="individual">		
+	</ul>
+	<ul id='detail2' class="individual">		
+	</ul>
+ 
+	
+<div id='rcvData'></div>
+
+</div>
+</div>
+
+<div id="show_user">
+<br><br>
+	<ul class="rounded">
+	<li><img src='./image/download.bmp'>
+	<div>아주 가끔씩 틀릴수도 있어</div>
+	</li>	
+	</ul>
+	<ul class="edit rounded">
+	<li id='rcvData_more'></li>	
+	<div id='detail_more'style="font-size: 1.3em; text-align: center; margin: 30px 0 30px; font-family: Marker felt;">           
+	</div>
+	<ul id='detail_manu'class="individual">	
+	</ul>
+</div>
+
+<div id="show_about">	
+		<div id="about" class="selectable"> 
+		<br><br><br><br>               
+                <p><strong>오늘의 빵상</strong><br />Version 1.0 beta<br />                    
+                <p><em>오늘의 빵상은 오늘하루의 운세를<br /> 재미있는 음성과 함께 볼수있는<br/>어플리케이션 입니다.</em></p>
+				<a href="http://www.ecosaver.com">By MHR</a></p>                    
+        <br><br><br><br><br>
+		</div>
+	
+</div>
+
+
+</div>
+</body>
+
+</html>
